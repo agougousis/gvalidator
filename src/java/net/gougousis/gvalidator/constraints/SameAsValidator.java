@@ -48,19 +48,13 @@ public class SameAsValidator extends BaseValidator implements ConstraintValidato
             }
 
         } catch (final NoSuchMethodException ex) {
-            logText("NoSuchMethodException - "+ex.getMessage());
-            return false;
-
+            throw new RuntimeException(ex.getMessage());
         } catch (final InvocationTargetException ex) {
-            logText("InvocationTargetException - "+ex.getMessage());
-            return false;
-
+            throw new RuntimeException(ex.getMessage());
         } catch (final IllegalAccessException ex) {
-            logText("IllegalAccessException - "+ex.getMessage());
-            return false;
+            throw new RuntimeException(ex.getMessage());
         } catch (Exception ex){
-            logText("Exception - "+ex.getMessage());
-            return false;
+            throw new RuntimeException(ex.getMessage());
         }
 
     }        

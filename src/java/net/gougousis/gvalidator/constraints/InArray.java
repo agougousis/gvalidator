@@ -8,15 +8,15 @@ import java.lang.annotation.Target;
 import javax.validation.Constraint;
 import javax.validation.Payload;
 
-@Constraint(validatedBy = {IsDateValidator.class})   // Indicates to the bean validation provider that this is a constraint annotation. It also points to the constraint validation implementation routine
+@Constraint(validatedBy = {InArrayValidator.class})   // Indicates to the bean validation provider that this is a constraint annotation. It also points to the constraint validation implementation routine
 @Target({ElementType.FIELD}) //This constraint annotation can be used only on fields and method parameters.
 @Retention(value = RetentionPolicy.RUNTIME)         // the bean validation provider will inspect your objects at runtime
 @Documented
-public @interface IsDate {
+public @interface InArray {
 
-    String dateFormat() default "";
+    String[] valueList();
     
-    String message() default "This is not a valid date";    // Provide a default error validation message 
+    String message() default "This field value is not acceptable.";    // Provide a default error validation message 
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }

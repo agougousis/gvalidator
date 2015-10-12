@@ -29,7 +29,7 @@ public class RequiredWithValidator extends BaseValidator implements ConstraintVa
             // Checking the necessery conditions
             if((!emptyString(dependOnFieldValue))&&(emptyString(testFieldValue))){
                 context.disableDefaultConstraintViolation();
-                context.buildConstraintViolationWithTemplate("Field '"+testFieldName+"' is required when field '"+dependOFieldName+"' is not empty.")
+                context.buildConstraintViolationWithTemplate("Field '"+testFieldName+"' is required when field '"+dependOFieldName+"' is not empty.").addNode(testFieldName)
                     .addConstraintViolation();                  
                 return false;
             } else {
@@ -37,19 +37,13 @@ public class RequiredWithValidator extends BaseValidator implements ConstraintVa
             }
 
         } catch (final NoSuchMethodException ex) {
-            logText("NoSuchMethodException - "+ex.getMessage());
-            return false;
-
+            throw new RuntimeException(ex.getMessage());            
         } catch (final InvocationTargetException ex) {
-            logText("InvocationTargetException - "+ex.getMessage());
-            return false;
-
+            throw new RuntimeException(ex.getMessage());
         } catch (final IllegalAccessException ex) {
-            logText("IllegalAccessException - "+ex.getMessage());
-            return false;
+            throw new RuntimeException(ex.getMessage());
         } catch (Exception ex){
-            logText("Exception - "+ex.getMessage());
-            return false;
+            throw new RuntimeException(ex.getMessage());
         }
 
     }        
