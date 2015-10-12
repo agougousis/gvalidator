@@ -1,4 +1,6 @@
 # gvalidator
+
+## What is it?
 An input validation library for J2EE projects¨
 
 This library provides a ```FormValidator``` class that helps developers validate user input in server-side (servlet) using bean validation, extending at the same time the constraints available by Hibernate Validator. The assignment of data sent to a servlet through a GET or POST request are automatically assigned.
@@ -77,3 +79,33 @@ The ```getBeanForm()``` returns the bean that holds the values of the form:
 ```java
 	RegistrationForm form = (RegistrationForm) validator.getBeanForm();
 ```
+
+## Supported validation constraints
+
+Additionally to the constraints provided by Bean Validation API and Hibernate Validator, the following constraints have been implemented:
+```
+@Alpha		Field,Parameter		String that contains only letters 
+@AlphaNum	Field,Parameter		String that contains only letters and digits.
+@AlphaPlus	Field,Parameter		String that contains only letters, digits, spaces, dashes and underscores.
+@IsDate		Field,Parameter		String representing a date in certain format.
+@InArray	Field,Parameter		String chosen from a list of values.
+@SameAs		Class,Interface		A property that has to have the same value as another property.
+@RequiredWith	Class,Interface		A property is required only if a value has been given to another property.
+@RequiredIf	Class,Interface 	A property is required only if another property has a certain value.
+```
+
+
+
+## Dependencies
+```
+The libraries that are required and based on which this library has been developed are:
+	- hibernate-validator-4.3.0.Final.jar
+	- validation-api-1.0.0.GA.jar
+	- jboss-logging-3.1.0
+	- commons-beansutils-1.9.2.jar
+	- commons-collections-3.2.1.jar
+```
+
+
+
+
