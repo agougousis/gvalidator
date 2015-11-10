@@ -9,7 +9,6 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import java.util.ArrayList;
-import javax.servlet.http.HttpServletRequest;
 
 public class FormValidator {
     
@@ -19,33 +18,34 @@ public class FormValidator {
     private ArrayList<String> errorLog = new ArrayList<String>();
     
     public FormValidator(String beanFormClass){
-        this.beanFormClass = "gr.gougousis.beans.forms."+beanFormClass;
+        this.beanFormClass = beanFormClass;
     }
     
-    public void load(HttpServletRequest request) {
-
+    public void load(Map<String,String[]> params) {
+        
         try {
             // Create a bean instance for the form
             this.beanForm = Class.forName(this.beanFormClass).getConstructor().newInstance();
             // Load form data from request to bean
-            String errorMessage = ((FormBean) this.beanForm).load(request);
+            String errorMessage = ((FormBean) this.beanForm).load(params);
             if(errorMessage.length() > 0 ){
-                errorLog.add(errorMessage);
+                throw new RuntimeException(errorMessage);
+                //errorLog.add(errorMessage);
             }
         } catch (ClassNotFoundException ex) {
-            throw new RuntimeException(ex.getMessage());
+            throw new RuntimeException("ClassNotFoundException: "+ex.getMessage());
         } catch (NoSuchMethodException ex) {
-            throw new RuntimeException(ex.getMessage());
+            throw new RuntimeException("NoSuchMethodException: "+ex.getMessage());
         } catch (SecurityException ex) {
-            throw new RuntimeException(ex.getMessage());
+            throw new RuntimeException("SecurityException: "+ex.getMessage());
         } catch (InstantiationException ex) {
-            throw new RuntimeException(ex.getMessage());
+            throw new RuntimeException("InstantiationException" +ex.getMessage());
         } catch (IllegalAccessException ex) {
-            throw new RuntimeException(ex.getMessage());
+            throw new RuntimeException("IllegalAccessException: "+ex.getMessage());
         } catch (IllegalArgumentException ex) {
-            throw new RuntimeException(ex.getMessage());
+            throw new RuntimeException("IllegalArgumentException: "+ex.getMessage());
         } catch (InvocationTargetException ex) {
-            throw new RuntimeException(ex.getMessage());
+            throw new RuntimeException("InvocationTargetException: "+ex.getMessage());
         }
        
     }
@@ -55,8 +55,8 @@ public class FormValidator {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();        
         int counter = 0;
-        // Validate all constraintsof beanForm (using the validate() method) and read the validation messages
-        for (ConstraintViolation<Object> error : validator.validate( this.beanForm ) ) {
+        // Validate all constraints of beanForm (using the validate() method) and read the validation messages
+        for (ConstraintViolation<Object> error : validator.validate(this.beanForm) ) {
                 counter++;              
                 errors.put(error.getPropertyPath().toString(), error.getMessage());                       
         }     
@@ -66,9 +66,8 @@ public class FormValidator {
         validate();        
         if(this.errors.size() > 0){
             return true;
-        } else {
-            return false;
-        }
+        } 
+        return false;
     }
     
     public Map<String,String> getErrors(){
@@ -82,5 +81,9 @@ public class FormValidator {
     public Object getBeanForm(){
         return this.beanForm;
     }    
+    
+    public String getBeanFormClass(){
+        return this.beanFormClass;
+    }
     
 }

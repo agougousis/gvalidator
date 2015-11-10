@@ -1,10 +1,10 @@
 package net.gougousis.gvalidator.base;
 
-import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 public interface FormBean {
     
     // Assigns object properties from request parameters
-    public String load(HttpServletRequest request);
+    public String load(Map<String,String[]> params);
     
 }

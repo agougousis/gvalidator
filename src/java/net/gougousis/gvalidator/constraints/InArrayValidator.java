@@ -8,19 +8,20 @@ import java.util.List;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-public class InArrayValidator extends BaseValidator implements ConstraintValidator<InArray,String> {
+public class InArrayValidator implements ConstraintValidator<InArray,String> {
         
-    String[] valueList;
+    String acceptedValues;
     
     @Override
     public void initialize(InArray constraintAnnotation) {
-        valueList = constraintAnnotation.valueList();
-        
+        acceptedValues = constraintAnnotation.acceptedValues();        
     }
 
     @Override
     public boolean isValid(String value,ConstraintValidatorContext context) {   
                 
+        String[] valueList = acceptedValues.split(",");
+        
         if(value == null){
             return true;
         } else {
@@ -32,7 +33,6 @@ public class InArrayValidator extends BaseValidator implements ConstraintValidat
             }
         }       
         
-    }        
-    
+    }            
     
 }
