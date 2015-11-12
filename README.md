@@ -3,13 +3,13 @@
 ## What is it?
 An input validation library for J2EE projects¨
 
-This library provides a ```FormValidator``` class that helps developers validate user input in server-side (servlet) using bean validation, extending at the same time the constraints available by Hibernate Validator. The assignment of data sent to a servlet through a GET or POST request are automatically assigned.
+This library provides a ```FormValidator``` class that helps developers validate user input in server-side (servlet) using bean validation, extending at the same time the constraints available by Hibernate Validator. The assignment of data sent to a servlet through a GET or POST request takes place automatically.
 
 For example, the developer that wants to validate a registration form defines e.g a RegistrationForm class annotated with validation constraints, like the following:
 
 ```java
 @SameAs(testFieldName="repeatPassword",dependOnFieldName="password")
-public class RegistrationForm extends BaseForm implements FormBean {
+public class RegistrationForm extends BaseForm {
     
     // Properties (with validation annotation)
 
@@ -59,7 +59,7 @@ public class RegistrationForm extends BaseForm implements FormBean {
 After that, the validation that takes place in the servlet looks really simple:
 
 ```java
-  FormValidator validator = new FormValidator("TestForm");  
+  FormValidator validator = new FormValidator("my.package.forms.TestForm");  
   validator.load(request);
   if(validator.fails()){
 
@@ -78,6 +78,23 @@ The ```getBeanForm()``` returns the bean that holds the values of the form:
 
 ```java
 	RegistrationForm form = (RegistrationForm) validator.getBeanForm();
+
+	out.write("firstname = "+form.getFirstname()+"<br>");
+	out.write("lastname = "+form.getLastname()+"<br>");
+```
+
+Getting all the validation errors, along with the field names and values (for field where the validation failed), can be done like this:
+
+```java
+f(validator.fails()){
+            RegistrationForm form = (RegistrationForm) validator.getBeanForm();
+            for (Map.Entry<String, String> entry : validator.getErrors().entrySet()) {
+                String fieldName = entry.getKey();
+                String errorMessage = entry.getValue();
+                String fieldValue = form.getFieldAsString(fieldName);
+                out.write(fieldName + " <strong>(problem)</strong> " + errorMessage + " <strong>(old value)</strong> "+fieldValue+"<br>");
+            }
+        }
 ```
 
 ## Supported validation constraints
@@ -93,8 +110,6 @@ Additionally to the constraints provided by Bean Validation API and Hibernate Va
 @RequiredWith	Class,Interface		A property is required only if a value has been given to another property.
 @RequiredIf	Class,Interface 	A property is required only if another property has a certain value.
 ```
-
-
 
 ## Dependencies
 ```
