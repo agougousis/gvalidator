@@ -19,7 +19,7 @@ public class FormValidator {
     
     public FormValidator(String beanFormClass){
         this.beanFormClass = beanFormClass;
-    }
+    }        
     
     public void load(Map<String,String[]> params) {
         
@@ -30,7 +30,6 @@ public class FormValidator {
             String errorMessage = ((FormBean) this.beanForm).load(params);
             if(errorMessage.length() > 0 ){
                 throw new RuntimeException(errorMessage);
-                //errorLog.add(errorMessage);
             }
         } catch (ClassNotFoundException ex) {
             throw new RuntimeException("ClassNotFoundException: "+ex.getMessage());

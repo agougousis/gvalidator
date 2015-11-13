@@ -98,7 +98,9 @@ public class BaseForm implements FormBean {
             String fieldType = field.getType().getSimpleName();               
             switch(fieldType){                                                            
                 case "String":
-                    fieldValue = field.get(this).toString();
+                    if(field.get(this) != null){
+                        fieldValue = field.get(this).toString();
+                    }                   
                     break;
                 case "String[]":
                     String[] parts = (String[]) field.get(this);
@@ -111,7 +113,9 @@ public class BaseForm implements FormBean {
                     }                    
                     break;
                 case "int":
-                    fieldValue = field.get(this).toString();
+                    if(field.get(this) != null){
+                        fieldValue = field.get(this).toString();
+                    }                    
                     break;
             }
                         
