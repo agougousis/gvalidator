@@ -60,7 +60,7 @@ After that, the validation that takes place in the servlet looks really simple:
 
 ```java
   FormValidator validator = new FormValidator("my.package.forms.TestForm");  
-  validator.load(request);
+  validator.load(request.getParameterMap());
   if(validator.fails()){
 
 	} else {
